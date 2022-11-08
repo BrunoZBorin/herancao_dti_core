@@ -18,19 +18,12 @@ namespace Fabrica_Automoveis.DAO
             var id = 1;
             try
             {
-                //var cmd = Conexao.dbCon().CreateCommand();
-                //cmd.CommandText = "SELECT id_moto FROM moto WHERE id_moto = (SELECT MAX(id_moto) FROM moto)";
-                //SQLiteDataAdapter dados = new SQLiteDataAdapter(cmd.CommandText, Conexao.dbCon());
-                string sqlSelect = "SELECT * FROM moto";
+                string sqlSelect = "SELECT * FROM SIHOSP.moto";
                 DataTable veiculos = BDOracle.getDataTable(sqlSelect);
-
-                //dados.Fill(veiculo);
 
                 if (veiculos.Rows.Count > 0)
                 {
-                    id = veiculos.Rows[0].Field<int>("id_moto");
-                    id += 1;
-                    MessageBox.Show($"{id}");
+                    id = veiculos.Rows.Count;
                 }
             }
             catch (Exception E)
@@ -40,16 +33,10 @@ namespace Fabrica_Automoveis.DAO
 
             try
             {
-                var cmd = Conexao.dbCon().CreateCommand();
+                string sqlInsert = $"INSERT INTO SIHOSP.moto (id_moto, nome, modelo, ano) VALUES ({id}, '{ cd.Nome}', '{ cd.Modelo}', '{ cd.Ano}')";
 
-                cmd.CommandText = "INSERT INTO moto (id_moto, nome, modelo, ano) VALUES (@id_veiculo, @nome, @modelo, @ano)";
-                cmd.Parameters.AddWithValue("@id_veiculo", id);
-                cmd.Parameters.AddWithValue("@nome", cd.Nome);
-                cmd.Parameters.AddWithValue("@modelo", cd.Modelo);
-                cmd.Parameters.AddWithValue("@ano", cd.Ano);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Deu certo");
-                Conexao.dbCon().Close();
+                String retorno = BDOracle.executaComandoCommit(sqlInsert);
+
                 MessageBox.Show("Moto salva com sucesso");
             }
             catch (Exception E)
@@ -64,15 +51,8 @@ namespace Fabrica_Automoveis.DAO
             List<VeiculoDTO> list = new List<VeiculoDTO>();
             try
             {
-                //var cmd = Conexao.dbCon().CreateCommand();
-                //cmd.CommandText = "SELECT * FROM moto";
-                //SQLiteDataAdapter dados = new SQLiteDataAdapter(cmd.CommandText, Conexao.dbCon());
-                //DataTable veiculos = new DataTable();
-                string sqlSelect = "SELECT * FROM moto";
+                string sqlSelect = "SELECT * FROM SIHOSP.moto";
                 DataTable veiculos = BDOracle.getDataTable(sqlSelect);
-
-                //dados.Fill(veiculos);
-
 
                 list = (from DataRow dr in veiculos.Rows
                         select new VeiculoDTO()

@@ -60,5 +60,33 @@ namespace Fabrica_Automoveis
             dataGridView1.DataSource = veiculoList;
         }
 
+        private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            idRowSelected = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+            tipoRowSelected = dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (idRowSelected != 0)
+            {
+                VeiculoDAO.Delete(idRowSelected, tipoRowSelected);
+                carregaGrid();
+            }
+            else
+            {
+                MessageBox.Show("Por favor selecione um veículo para exclusão");
+            }
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowIndex = e.RowIndex;
+            DataGridViewRow row = dataGridView1.Rows[rowIndex];
+            CadastroVeiculos cv = new CadastroVeiculos();
+            cv.GetValuesFromListaVeiculos(row);
+            this.Hide();
+            cv.Show();
+        }
     }
 }
