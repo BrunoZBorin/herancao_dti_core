@@ -17,32 +17,15 @@ namespace Fabrica_Automoveis.DAO
         public static void Insert(CaminhoneteDTO cd)
         {
             
-            Int32 id = 1;
-            try
-            {
-                
-                string sql = "SELECT id_caminhonete FROM SIHOSP.caminhonete WHERE id_caminhonete = (SELECT MAX(id_caminhonete) FROM SIHOSP.caminhonete)";
-                
-                DataTable veiculos = BDOracle.getDataTable(sql);
-
-                if (veiculos.Rows.Count > 0)
-                {
-                    id = veiculos.Rows.Count;
-                }
-            }
-            catch (Exception E)
-            {
-                MessageBox.Show(E.Message);
-            }
+            var id = 0;
 
             try
             {
+                var sqlInsert = $"INSERT INTO SIHOSP.caminhonete " +
+                    $"( nome, modelo, ano) VALUES " +
+                    $"( '{ cd.Nome}', '{ cd.Modelo}', '{ cd.Ano}')";
 
-                string sqlInsert = $"INSERT INTO SIHOSP.caminhonete (id_caminhonete, nome, modelo, ano) VALUES ({id}, '{ cd.Nome}', '{ cd.Modelo}', '{ cd.Ano}')";
-
-                String retorno = BDOracle.executaComandoCommit(sqlInsert);
-
-                MessageBox.Show($"{retorno}");
+                var retorno = BDOracle.executaComandoCommitHandle(sqlInsert, "id_caminhonete", ref id);
                 
                 MessageBox.Show("Caminhonete salva com sucesso");
             }
@@ -58,7 +41,7 @@ namespace Fabrica_Automoveis.DAO
             List<VeiculoDTO> list = new List<VeiculoDTO>();
             try
             {
-                string sqlSelect = "SELECT * FROM SIHOSP.caminhonete";
+                var sqlSelect = "SELECT * FROM SIHOSP.caminhonete";
                 DataTable veiculos = BDOracle.getDataTable(sqlSelect);
 
                 list = (from DataRow dr in veiculos.Rows

@@ -43,10 +43,13 @@ namespace Fabrica_Automoveis.DAO
             {
                 
                 
-                string sqlUpdate = "UPDATE " + tabela + " SET nome = '" + veiculo.Nome.ToString() + "', modelo = '" + veiculo.Modelo.ToString() + "'" +
-                    ", ano = '" + veiculo.Ano.ToString() + "' WHERE " + tipo_id + " = " + veiculo.Id_veiculo + " ";
+                var sqlUpdate = "UPDATE " + tabela + " SET " +
+                    "nome = '" + veiculo.Nome.ToString() + 
+                    "', modelo = '" + veiculo.Modelo.ToString() + "'" +
+                    ", ano = '" + veiculo.Ano.ToString() + 
+                    "' WHERE " + tipo_id + " = " + veiculo.Id_veiculo + " ";
                 
-                String retorno = BDOracle.executaComandoCommit(sqlUpdate);
+                var retorno = BDOracle.executaComandoCommit(sqlUpdate);
 
                 MessageBox.Show("Veículo alterado com sucesso");
             }
@@ -85,8 +88,9 @@ namespace Fabrica_Automoveis.DAO
             try
             {
                 
-                string sqlDelete = "DELETE FROM " + tabela + " WHERE " + tipo_id + " = " + id + " ";
-                String retorno = BDOracle.executaComandoCommit(sqlDelete);
+                var sqlDelete = "DELETE FROM " + tabela + 
+                    " WHERE " + tipo_id + " = " + id + " ";
+                var retorno = BDOracle.executaComandoCommit(sqlDelete);
 
                 MessageBox.Show("Veículo excluído com sucesso");
             }

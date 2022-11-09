@@ -15,27 +15,15 @@ namespace Fabrica_Automoveis.DAO
     {
         public static void Insert(MotoDTO cd)
         {
-            var id = 1;
+            var id = 0;
+            
             try
             {
-                string sqlSelect = "SELECT * FROM SIHOSP.moto";
-                DataTable veiculos = BDOracle.getDataTable(sqlSelect);
+                var sqlInsert = $"INSERT INTO SIHOSP.moto " +
+                    $"(nome, modelo, ano) VALUES " +
+                    $"('{ cd.Nome}', '{ cd.Modelo}', '{ cd.Ano}')";
 
-                if (veiculos.Rows.Count > 0)
-                {
-                    id = veiculos.Rows.Count;
-                }
-            }
-            catch (Exception E)
-            {
-                MessageBox.Show(E.Message);
-            }
-
-            try
-            {
-                string sqlInsert = $"INSERT INTO SIHOSP.moto (id_moto, nome, modelo, ano) VALUES ({id}, '{ cd.Nome}', '{ cd.Modelo}', '{ cd.Ano}')";
-
-                String retorno = BDOracle.executaComandoCommit(sqlInsert);
+                var retorno = BDOracle.executaComandoCommitHandle(sqlInsert, "id_moto", ref id);
 
                 MessageBox.Show("Moto salva com sucesso");
             }
@@ -51,7 +39,7 @@ namespace Fabrica_Automoveis.DAO
             List<VeiculoDTO> list = new List<VeiculoDTO>();
             try
             {
-                string sqlSelect = "SELECT * FROM SIHOSP.moto";
+                var sqlSelect = "SELECT * FROM SIHOSP.moto";
                 DataTable veiculos = BDOracle.getDataTable(sqlSelect);
 
                 list = (from DataRow dr in veiculos.Rows
